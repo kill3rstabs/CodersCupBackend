@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
-dotenv.config({ path: '../.env' });
+dotenv.config({ path: '.env' });
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -22,18 +22,24 @@ try {
 
 let db = conn.db('coder');
 
-export default db;
-
-app.post('/submit', async (req, res) => {
+const submitHandler = async (event, context) => {
     try {
         let collection = await db.collection('participants');
-        let newDocument = req.body;
+        let newDocument = JSON.parse(event.body);
         newDocument.date = new Date();
         let result = await collection.insertOne(newDocument);
-        res.send(result);
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify(result),
+        };
     } catch (e) {
         console.error(e);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: 'Internal Server Error' }),
+        };
     }
-});
+};
 
-app.listen(5000, () => console.log('Server ready at http://localhost:5000'));
+export { app, submitHandler };
