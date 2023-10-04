@@ -36,4 +36,50 @@ app.post('/submit', async (req, res) => {
     }
 });
 
+app.get('/email', async (req, res) => {
+    try {
+        let collection = await db.collection('participants');
+        let query = { email: req.body.email };
+        let result = await collection.find(query).toArray();
+        if (result.length > 0) {
+            res.send(true);
+        } else {
+            res.send(false);
+        }
+
+    } catch (e) {
+        console.error(e);
+    }
+})
+
+app.get('/team', async (req, res) => {
+    try {
+        let collection = await db.collection('participants');
+        let query = { team: req.body.team };
+        let result = await collection.find(query).toArray();
+        if (result.length > 0) {
+            res.send(true);
+        } else {
+            res.send(false);
+        }
+    } catch (e) {
+        console.error(e);
+    }   
+})
+
+app.get('/id', async (req, res) => {
+    try {
+        let collection = await db.collection('participants');
+        let query = { id: req.body.id };
+        let result = await collection.find(query).toArray();
+        if (result.length > 0) {
+            res.send(true);
+        } else {
+            res.send(false);
+        }
+    } catch (e) {
+        console.error(e);
+    }
+})
+
 app.listen(5000, () => console.log('Server ready at http://localhost:5000'));
