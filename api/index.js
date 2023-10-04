@@ -41,11 +41,7 @@ app.get('/email', async (req, res) => {
         let collection = await db.collection('participants');
         let query = { email: req.body.email };
         let result = await collection.find(query).toArray();
-        if (result.length > 0) {
-            res.send(true);
-        } else {
-            res.send(false);
-        }
+        
 
     } catch (e) {
         console.error(e);
@@ -55,7 +51,7 @@ app.get('/email', async (req, res) => {
 app.get('/team', async (req, res) => {
     try {
         let collection = await db.collection('participants');
-        let query = { team: req.body.team };
+        let query = { "data.teamName": req.body.team };
         let result = await collection.find(query).toArray();
         if (result.length > 0) {
             res.send(true);
@@ -70,13 +66,26 @@ app.get('/team', async (req, res) => {
 app.get('/id', async (req, res) => {
     try {
         let collection = await db.collection('participants');
-        let query = { id: req.body.id };
+        let query = { "data.leaderId": req.body.id };
         let result = await collection.find(query).toArray();
         if (result.length > 0) {
             res.send(true);
         } else {
-            res.send(false);
+            let query1 = { "data.mem1Id": req.body.id };
+            let result1 = await collection.find(query1).toArray();
+            if (result1.length > 0) {
+                res.send(true);
+            } else {
+                let query2 = { "data.mem2Id": req.body.id };
+                let result2 = await collection.find(query2).toArray();
+                if (result2.length > 0) {
+                    res.send(true);
+                } else {
+                    res.send(false);
+                }
+            }
         }
+        
     } catch (e) {
         console.error(e);
     }
