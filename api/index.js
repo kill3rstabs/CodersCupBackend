@@ -36,7 +36,7 @@ app.post('/submit', async (req, res) => {
     }
 });
 
-app.get('/email', async (req, res) => {
+app.post('/email', async (req, res) => {
     try {
         let collection = await db.collection('participants');
         let query = { email: req.body.email };
@@ -48,7 +48,7 @@ app.get('/email', async (req, res) => {
     }
 })
 
-app.get('/team', async (req, res) => {
+app.post('/team', async (req, res) => {
     try {
         let collection = await db.collection('participants');
         let query = { "data.teamName": req.body.team };
@@ -63,7 +63,7 @@ app.get('/team', async (req, res) => {
     }   
 })
 
-app.get('/id', async (req, res) => {
+app.post('/id', async (req, res) => {
     try {
         let collection = await db.collection('participants');
         let query = { "data.leaderId": req.body.id };
