@@ -39,25 +39,17 @@ app.post('/submit', async (req, res) => {
 app.post('/email', async (req, res) => {
     try {
         let collection = await db.collection('participants');
-        let query = { "data.leaderEmail": req.body.email };
+        let query = { "data.leaderEmail": req.body.email};
         let result = await collection.find(query).toArray();
-        if (result.length > 0) {
+        let query1 = { "data.mem1Email": req.body.email };
+        let result1 = await collection.find(query1).toArray();
+        let query2 = { "data.mem2Email": req.body.email };
+        let result2 = await collection.find(query2).toArray();
+        if (result.length > 0 || result1.length > 0 || result2.length > 0) {
             res.send(true);
         }
         else {
-            let query1 = { "data.mem1Email": req.body.id };
-            let result1 = await collection.find(query1).toArray();
-            if (result1.length > 0) {
-                res.send(true);
-            } else {
-                let query2 = { "data.mem2Email": req.body.id };
-                let result2 = await collection.find(query2).toArray();
-                if (result2.length > 0) {
-                    res.send(true);
-                } else {
-                    res.send(false);
-                }
-            }
+            res.send(false);
         }       
     } catch (e) {
         console.error(e);
@@ -70,22 +62,14 @@ app.post('/id', async (req, res) => {
         let collection = await db.collection('participants');
         let query = { "data.leaderId": req.body.id };
         let result = await collection.find(query).toArray();
-        if (result.length > 0) {
+        let query1 = { "data.mem1Id": req.body.id };
+        let result1 = await collection.find(query1).toArray();
+        let query2 = { "data.mem2Id": req.body.id };
+        let result2 = await collection.find(query2).toArray();
+        if (result.length > 0 || result1.length > 0 || result2.length > 0) {
             res.send(true);
         } else {
-            let query1 = { "data.mem1Id": req.body.id };
-            let result1 = await collection.find(query1).toArray();
-            if (result1.length > 0) {
-                res.send(true);
-            } else {
-                let query2 = { "data.mem2Id": req.body.id };
-                let result2 = await collection.find(query2).toArray();
-                if (result2.length > 0) {
-                    res.send(true);
-                } else {
-                    res.send(false);
-                }
-            }
+            res.send(false);
         }
         
     } catch (e) {
