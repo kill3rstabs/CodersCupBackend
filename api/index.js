@@ -39,29 +39,31 @@ app.post('/submit', async (req, res) => {
 app.post('/email', async (req, res) => {
     try {
         let collection = await db.collection('participants');
-        let query = { email: req.body.email };
+        let query = { "data.leaderEmail": req.body.email };
         let result = await collection.find(query).toArray();
-        
-
+        if (result.length > 0) {
+            res.send(true);
+        }
+        else {
+            let query1 = { "data.mem1Email": req.body.id };
+            let result1 = await collection.find(query1).toArray();
+            if (result1.length > 0) {
+                res.send(true);
+            } else {
+                let query2 = { "data.mem2Email": req.body.id };
+                let result2 = await collection.find(query2).toArray();
+                if (result2.length > 0) {
+                    res.send(true);
+                } else {
+                    res.send(false);
+                }
+            }
+        }       
     } catch (e) {
         console.error(e);
     }
 })
 
-app.post('/team', async (req, res) => {
-    try {
-        let collection = await db.collection('participants');
-        let query = { "data.teamName": req.body.team };
-        let result = await collection.find(query).toArray();
-        if (result.length > 0) {
-            res.send(true);
-        } else {
-            res.send(false);
-        }
-    } catch (e) {
-        console.error(e);
-    }   
-})
 
 app.post('/id', async (req, res) => {
     try {
@@ -91,4 +93,18 @@ app.post('/id', async (req, res) => {
     }
 })
 
+app.post('/team', async (req, res) => {
+    try {
+        let collection = await db.collection('participants');
+        let query = { "data.teamName": req.body.team };
+        let result = await collection.find(query).toArray();
+        if (result.length > 0) {
+            res.send(true);
+        } else {
+            res.send(false);
+        }
+    } catch (e) {
+        console.error(e);
+    }   
+})
 app.listen(5000, () => console.log('Server ready at http://localhost:5000'));
