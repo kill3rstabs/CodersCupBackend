@@ -24,17 +24,17 @@ let db = conn.db('coder');
 
 export default db;
 
-app.post('/submit', async (req, res) => {
-    try {
-        let collection = await db.collection('participants');
-        let newDocument = req.body;
-        newDocument.date = new Date();
-        let result = await collection.insertOne(newDocument);
-        res.send(result);
-    } catch (e) {
-        console.error(e);
-    }
-});
+// app.post('/submit', async (req, res) => {
+//     try {
+//         let collection = await db.collection('participants');
+//         let newDocument = req.body;
+//         newDocument.date = new Date();
+//         let result = await collection.insertOne(newDocument);
+//         res.send(result);
+//     } catch (e) {
+//         console.error(e);
+//     }
+// });
 
 app.post('/email', async (req, res) => {
     try {
