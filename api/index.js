@@ -16,13 +16,25 @@ const client = new MongoClient(connectionString);
 let conn;
 try {
     conn = await client.connect();
+    console.log('Connected to MongoDB');
 } catch (e) {
     console.error(e);
 }
 
-let db = conn.db('coder');
+let db = await conn.db('coder');
 
 export default db;
+
+app.get('/', async (req, res) => {
+    try {
+        let collection = await db.collection('participants');
+        let result = await collection.find({}).toArray();
+        res.send(result);
+        console.log(result);
+    } catch (e) {
+        console.error(e);
+    }
+});
 
 // app.post('/submit', async (req, res) => {
 //     try {
